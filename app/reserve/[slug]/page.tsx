@@ -1,7 +1,18 @@
 import Navbar from "@/app/components/Navbar";
 import Form from "./components/Form";
 import Header from "./components/Header";
- 
+import { Metadata, ResolvingMetadata } from 'next'
+
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  // read route params
+  const name = params.slug
+  return {
+    title: "Reserve at " + name
+  }
+}
+
+
 
 function ReservationPage() {
   return (
