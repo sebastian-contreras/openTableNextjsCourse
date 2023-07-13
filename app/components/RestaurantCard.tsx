@@ -10,7 +10,7 @@ interface Props{
 
 function RestaurantCard({restaurant}:Props) {
   const average = calculateReview(restaurant.reviews)
-  console.log(average);
+
   return (
     <div className="w-64 h-72 m-3 rounded overflow-hidden border cursor-pointer">
         <Link href={`/restaurant/${restaurant.slug}`}>
