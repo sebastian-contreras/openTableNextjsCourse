@@ -1,12 +1,16 @@
 import Link from "next/link";
 import { RestaurantCardType } from "../page";
 import Price from "./Price";
+import { calculateReview } from "../utils/calculateReview";
+import Stars from "./Stars";
 
 interface Props{
   restaurant: RestaurantCardType
 }
 
 function RestaurantCard({restaurant}:Props) {
+  const average = calculateReview(restaurant.reviews)
+  console.log(average);
   return (
     <div className="w-64 h-72 m-3 rounded overflow-hidden border cursor-pointer">
         <Link href={`/restaurant/${restaurant.slug}`}>
@@ -18,8 +22,10 @@ function RestaurantCard({restaurant}:Props) {
       <div className="p-1">
         <h3 className="font-bold text-2xl mb-2">{restaurant.name}</h3>
         <div className="flex items-start">
-          <div className="flex mb-2">*****</div>
-          <p className="ml-2">77 reviews</p>
+          <div className="flex mb-2">
+            <Stars numero={average}></Stars>
+            </div>
+          <p className="ml-2">{restaurant.reviews.length} reviews</p>
         </div>
         <div className="flex text-reg font-light capitalize">
           <p className=" mr-3">{restaurant.cuisine.name}</p>

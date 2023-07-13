@@ -10,7 +10,7 @@ import Reviews from "./components/Reviews";
 import ReservationCards from "./components/ReservationCards";
 import { useParams } from "next/navigation";
 import { Metadata, ResolvingMetadata } from "next";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Review } from "@prisma/client";
 
 export interface Restaurant {
   id: number;
@@ -18,6 +18,7 @@ export interface Restaurant {
   images: string[];
   description: string;
   slug: string;
+  reviews:Review[]
 }
 export async function generateMetadata({
   params,
@@ -42,6 +43,7 @@ const fetchRestaurantbySlug = async (slug: string): Promise<Restaurant> => {
       images: true,
       description: true,
       slug: true,
+      reviews:true
     },
   });
   if (!restaurant) {
@@ -60,13 +62,13 @@ async function RestaurantDetails({ params }: { params: { slug: string } }) {
         {/* RESAURANT NAVBAR */} {/* TITLE */}
         <Tittle name={restaurant.name} />
         {/* TITLE */} {/* RATING */}
-        <Rating />
+        <Rating reviews={restaurant.reviews}/>
         {/* RATING */} {/* DESCRIPTION */}
         <Description description={restaurant.description} />
         {/* DESCRIPTION */} {/* IMAGES */}
         <Images images={restaurant.images} />
         {/* IMAGES */} {/* REVIEWS */}
-        <Reviews />
+        <Reviews reviews={restaurant.reviews}/>
         {/* REVIEWS */}
       </div>
       <div className="w-[27%] relative text-reg">

@@ -3,7 +3,7 @@ import styles from "./page.module.css";
 import Navbar from "./components/Navbar";
 import Header from "./components/Header";
 import RestaurantCard from "./components/RestaurantCard";
-import { Cuisine, Location, PRICE, PrismaClient } from "@prisma/client";
+import { Cuisine, Location, PRICE, PrismaClient, Review } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -15,6 +15,8 @@ export interface RestaurantCardType {
   cuisine: Cuisine;
   location: Location;
   price: PRICE;
+  reviews:Review[]
+
 }
 
 const fetchRestaurant = async (): Promise<RestaurantCardType[]> => {
@@ -27,6 +29,7 @@ const fetchRestaurant = async (): Promise<RestaurantCardType[]> => {
       cuisine: true,
       location: true,
       price: true,
+      reviews:true
     },
   });
   return restaurants;

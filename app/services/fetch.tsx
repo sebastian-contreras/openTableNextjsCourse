@@ -4,6 +4,7 @@ import {
   PRICE,
   PrismaClient,
   Restaurant,
+  Review,
 } from "@prisma/client";
 import { RestaurantCardType } from "../page";
 
@@ -39,6 +40,7 @@ export const searchRestaurantsByCity = async (
       cuisine: true,
       location: true,
       price: true,
+      reviews:true
     },
   });
   if (!search) {
@@ -62,3 +64,21 @@ export const fetchCuisine = async (): Promise<Cuisine[]> => {
   }
   return cuisine;
 };
+
+export const fetchReviewsRestaurant = async (slugpass:string)=>{
+  const reviewsget = await prisma.restaurant.findMany(
+    {
+      where:{
+        slug:slugpass,
+      },
+      select:{
+        reviews:true
+      }
+    }
+  )
+  if(!reviewsget){
+    throw new Error
+  }
+  const array = reviewsget.map((e)=>e.reviews)
+  return array;
+}
