@@ -5,6 +5,7 @@ import {
   PrismaClient,
   Restaurant,
   Review,
+  User,
 } from "@prisma/client";
 import { RestaurantCardType } from "../page";
 
@@ -40,7 +41,7 @@ export const searchRestaurantsByCity = async (
       cuisine: true,
       location: true,
       price: true,
-      reviews:true
+      reviews: true,
     },
   });
   if (!search) {
@@ -65,20 +66,65 @@ export const fetchCuisine = async (): Promise<Cuisine[]> => {
   return cuisine;
 };
 
-export const fetchReviewsRestaurant = async (slugpass:string)=>{
-  const reviewsget = await prisma.restaurant.findMany(
-    {
-      where:{
-        slug:slugpass,
-      },
-      select:{
-        reviews:true
-      }
-    }
-  )
-  if(!reviewsget){
-    throw new Error
+export const fetchReviewsRestaurant = async (slugpass: string) => {
+  const reviewsget = await prisma.restaurant.findMany({
+    where: {
+      slug: slugpass,
+    },
+    select: {
+      reviews: true,
+    },
+  });
+  if (!reviewsget) {
+    throw new Error();
   }
-  const array = reviewsget.map((e)=>e.reviews)
+  const array = reviewsget.map((e) => e.reviews);
   return array;
-}
+};
+
+export const userWithEmail = async (email: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
+
+  return user;
+};
+export const userWithEmailPublic = async (email: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      email: email,
+    },
+    select: {
+      id: true,
+      first_name:true,
+      last_name:true,
+      city:true,
+      email:true,
+      phone:true
+    },
+  });
+
+  return user;
+};
+export const NewUser = async (
+  firstName: string,
+  lastName: string,
+  city: string,
+  password: string,
+  email: string,
+  phone: string
+) => {
+  const newUser = prisma.user.create({
+    data: {
+      first_name: firstName,
+      last_name: lastName,
+      city,
+      password,
+      email,
+      phone,
+    },
+  });
+  return newUser;
+};

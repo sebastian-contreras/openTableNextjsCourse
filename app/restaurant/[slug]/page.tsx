@@ -8,7 +8,7 @@ import Description from "./components/Description";
 import Images from "./components/Images";
 import Reviews from "./components/Reviews";
 import ReservationCards from "./components/ReservationCards";
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { Metadata, ResolvingMetadata } from "next";
 import { PrismaClient, Review } from "@prisma/client";
 
@@ -47,7 +47,7 @@ const fetchRestaurantbySlug = async (slug: string): Promise<Restaurant> => {
     },
   });
   if (!restaurant) {
-    throw new Error();
+    notFound()
   }
   return restaurant;
 };
